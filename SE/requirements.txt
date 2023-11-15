@@ -1,0 +1,4 @@
+notebook
+numpy
+scipy
+python-telegram-bot
