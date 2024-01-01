@@ -3,6 +3,9 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import json
 import os
+from transformers import pipeline
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
+
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! Thanks for chatting with me! I'm a Chat Guardian!")
@@ -16,15 +19,11 @@ async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Responses
 
 def handle_response(text: str) -> str:
-    processed: str = text.lower()
-
-    if 'hello' in processed:
-        return 'Hey there'
-    
-    if 'how are you' in processed:
-        return "I'm good, how are you?"
-    
-    return 'I do not understand what you wrote...'
+    print(sexism_classifier(text)[0]["label"])
+    if sexism_classifier(text)[0]["label"] == "LABEL_1":
+        return "you are being sexist"
+    else:
+        return 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
@@ -71,6 +70,11 @@ if __name__ == '__main__':
     TOKEN: Final = token
     BOT_USERNAME: Final = bot_name
     app = Application.builder().token(TOKEN).build()
+    tokenizer = AutoTokenizer.from_pretrained('tum-nlp/bertweet-sexism')
+    model = AutoModelForSequenceClassification.from_pretrained('tum-nlp/bertweet-sexism')
+
+    # Create the pipeline for classification
+    sexism_classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
 
     # Commands
     app.add_handler(CommandHandler('start',start_command))
