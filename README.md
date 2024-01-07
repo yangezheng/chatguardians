@@ -12,12 +12,10 @@ This is a NLP project, the goal is to against sexism speech on internet, which c
 
 1. Which model to use to detect a sexism speech?
 2. Which model to use to generate counter speech?
-3. How to systematically compare different models for the above questions.
-4. After find the model, how should we deploy them so the users can use them?
+3. After find the model, how should we deploy them so the users can use them?
 
 ### Answers to our problems
 
-1. to be found
+1. we are going to test many different models, which are pretrained with different goals, e.g. sentiment analysis. And see how different model performances.
 2. to be found
-3. to be found
-4. Perhaps like a promt, users type in a sentence that they think it maybe contains sexism. Or we provide APIs that chatbot in e.g. Telegram or Discord can use, to automatically detect the sexism speech in group chat.
+3. we decided to go with Automat Chatbot, which will pull every messges from something like telegram channel, analyse it and send alert or counter speech.
